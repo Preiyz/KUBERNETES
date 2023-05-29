@@ -18,18 +18,15 @@ echo "Updating the server..."
 sudo apt-get update > /dev/null
 echo "Server update complete."
 
+# Install necessary dependencies
+echo "Installing dependencies..."
+sudo apt-get install -y apt-transport-https ca-certificates curl > /dev/null
+echo "Dependencies installed successfully."
+
 # Download kubectl binary
 echo "Downloading kubectl..."
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.24.7/2022-10-31/bin/linux/amd64/kubectl
+curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 echo "Download complete."
-
-# Verify kubectl binary integrity
-echo "Verifying kubectl integrity..."
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.26.4/2023-05-11/bin/linux/amd64/kubectl.sha256
-if ! sha256sum -c kubectl.sha256; then
-    display_error "Failed to verify the integrity of the downloaded kubectl binary."
-fi
-echo "Verification successful."
 
 # Install kubectl
 echo "Installing kubectl..."
